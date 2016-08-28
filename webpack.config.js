@@ -37,6 +37,10 @@ module.exports = {
                 test: /\.tsx?$/,
                 loaders: ['react-hot', 'ts'],
                 include: src
+            }, {
+                test: /\.scss$/,
+                loaders: ['style', 'css', 'sass'],
+                include: src
             }]
     }
 };

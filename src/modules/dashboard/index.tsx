@@ -1,10 +1,14 @@
 import * as React from 'react';
+import RaisedButton from 'material-ui/RaisedButton';
+
+import {ModuleComponent} from '../core'
 
 interface IState {
     counter: number;
 }
 
-export class App extends React.Component<any, IState> {
+export class Component extends ModuleComponent<any, IState> {
+    static TITLE = 'dashboard';
     private timer: number;
     state: IState = {
         counter: 0
@@ -25,6 +29,6 @@ export class App extends React.Component<any, IState> {
     }
 
     render() {
-        return <div>Counter: {this.state.counter}</div>;
+        return <RaisedButton label={String(this.state.counter)}/>;
     }
 }
