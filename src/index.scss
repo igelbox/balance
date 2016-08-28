@@ -1,3 +1,24 @@
 body {
     margin: 0;
 }
+
+input[type='date'], input[type='time'] {
+    &::-webkit-inner-spin-button {
+        display: none;
+    }
+}
+
+.null {
+    input[type='date'], input[type='time'] {
+        &:not(:focus) {
+            &::-webkit-datetime-edit-text,
+            &::-webkit-datetime-edit-minute-field,
+            &::-webkit-datetime-edit-hour-field,
+            &::-webkit-datetime-edit-month-field,
+            &::-webkit-datetime-edit-day-field,
+            &::-webkit-datetime-edit-year-field {
+                color: transparent;
+            }
+        }        
+    }
+}
