@@ -1,0 +1,24 @@
+.collapsible {
+  .collapsible-header {
+    display: flex;
+    padding: 10px 20px;
+    line-height: 2rem;
+    white-space: nowrap;
+
+    &> .main {
+      flex-grow: 1;
+      overflow-x: hidden;
+
+      &> .title {
+        overflow-x: hidden;
+        text-overflow: ellipsis;
+      }
+    }
+
+    .right {
+      min-width: 6em;
+      padding-left: 1ex;
+      text-align: right;
+    }
+  }
+}
