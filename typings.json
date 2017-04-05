@@ -1,11 +1,13 @@
 {
   "globalDependencies": {
-    "material-ui": "registry:dt/material-ui#0.15.1+20160818062356",
-    "node": "registry:dt/node#6.0.0+20160826120425",
-    "react": "registry:dt/react#0.14.0+20160817201227",
+    "material-ui": "registry:dt/material-ui#0.15.1+20160914124448",
+    "node": "registry:dt/node#6.0.0+20160915134512",
+    "react": "registry:dt/react#0.14.0+20160829191040",
     "react-dom": "registry:dt/react-dom#0.14.0+20160412154040",
-    "react-router": "registry:dt/react-router#2.0.0+20160813233016",
-    "react-router/history": "registry:dt/react-router/history#2.0.0+20160608102730",
-    "react-tap-event-plugin": "registry:dt/react-tap-event-plugin#0.0.0+20160602142434"
+    "react-redux": "registry:dt/react-redux#4.4.0+20160908183346",
+    "react-router": "registry:dt/react-router#2.0.0+20160914113953",
+    "react-router/history": "registry:dt/react-router/history#2.0.0+20160830150755",
+    "react-tap-event-plugin": "registry:dt/react-tap-event-plugin#0.0.0+20160602142434",
+    "redux": "registry:dt/redux#3.5.2+20160703092728"
   }
 }
