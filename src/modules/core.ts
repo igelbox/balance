@@ -5,6 +5,6 @@ export interface IModuleRoute {
     component: any;
 }
 
-export abstract class ModuleComponent<P, S> extends Component<P, S> {
+export abstract class ModuleComponent<T, S> extends Component<{value: T, onChange: (value: T) => any}, S> {
     static TITLE: string;
 }

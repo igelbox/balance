@@ -2,15 +2,17 @@ import * as React from 'react';
 import {Router, Route, IndexRedirect, useRouterHistory} from 'react-router';
 import {createHashHistory} from 'history';
 
+import {createStore, combineReducers, Action, Store} from 'redux'
+import {Provider, connect} from 'react-redux'
+
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
-import AppBar from 'material-ui/AppBar';
-import Drawer from 'material-ui/Drawer';
 import {List, ListItem, MakeSelectable} from 'material-ui/List';
-import withWidth, {LARGE} from 'material-ui/utils/withWidth';
-import spacing from 'material-ui/styles/spacing';
+import {Tabs, Tab} from 'material-ui/Tabs';
 
 import {WithRouter, IRouterContext} from './utils/WithRouter';
 import * as mc from './modules/core';
+
+import TopLevelForm from './TopLevelForm';
 
 const SelectableList = MakeSelectable(List);
 
@@ -19,82 +21,87 @@ const history = useRouterHistory(createHashHistory)({
     queryKey: false
 });
 
+//import {reducer} from './modules/dashboard';
+interface ITab {
+    modname: string;
+    modpath?: string;
+    data?: any;
+}
+interface ITabs {
+    data: ITab[];
+}
+function tabs(state: ITabs = { data: [] }, act: any) {
+    switch (act.type) {
+        case 'addtab':
+            let mp = String(state.data.length);
+            act.router.push('documents/' + mp);
+            return {
+                data: state.data.concat([{ modname: 'documents', modpath: mp }]),
+            };
+    }
+    return state;
+}
+
+const store = createStore(combineReducers({
+    tabs
+}));
+
 export const Application = (props: { modules: mc.IModuleRoute[] }) => {
-    Main.MODULES = props.modules; //reactjs angels cry once again
+    MainFormImpl.MODULES = props.modules; //reactjs angels cry once again
     return <MuiThemeProvider>
-        <Router history={history}>
-            <Route path='/' component={MainWithWidth}>
-                <IndexRedirect to='dashboard'/>
-                { props.modules.map(m => <Route key={m.path} path={m.path} component={m.component}/>) }
-            </Route>
-        </Router>
+        <Provider store={store}>
+            <Router history={history}>
+                <Route path='/*' component={MainForm}>
+                </Route>
+            </Router>
+        </Provider>
     </MuiThemeProvider>
 };
 
-interface IAppState {
-    drawer: boolean;
-}
+type ReduxProps<T> = Store<T> & T;
 @WithRouter
-class Main extends React.Component<any, IAppState> {
+class MainFormImpl extends React.Component<ReduxProps<ITabs>, {}> {
     static MODULES: mc.IModuleRoute[];
-    state = {
-        drawer: false
-    };
     context: IRouterContext;
 
-    handleToggle(e: Event) {
-        e.preventDefault();
-        this.setState({
-            drawer: !this.state.drawer
-        });
-    }
-
     handleChangeModule(e: any, value: any) {
+        if (value === 'documents') {
+            this.props.dispatch({ type: 'addtab', router: this.context.router });
+            return;
+        }
         this.context.router.push(value);
     }
 
-    getStyles() {
-        const styles = {
-            content: {
-                margin: spacing.desktopGutter,
-            },
-            root: {
-                marginLeft: 0,
-            }
-        };
-        return styles;
+    handleChangeTab(value: any) {
+        this.context.router.push(value);
     }
 
     render() {
-        const handleToggle = this.handleToggle.bind(this);
-        const docked = this.props.width === LARGE;
-        const styles = this.getStyles();
-        if (docked)
-            styles.root.marginLeft = 256;
-        return <div style={styles.root}>
-            <Drawer
-                open={docked || this.state.drawer}
-                onRequestChange={(open) => this.setState({ drawer: open }) }
-                docked={docked}
-                >
-                <AppBar showMenuIconButton={false} title='Balance'/>
-                <SelectableList
-                    value={this.props.location.pathname}
-                    onChange={this.handleChangeModule.bind(this)}
+        const aprops = this.props as any;
+        let child = MainFormImpl.MODULES.filter(e => e.path === aprops.params.splat.split('/')[0]).map(e => e.component)[0];
+        return <TopLevelForm
+        title={<Tabs
+                    style={{ overflowX: 'auto' }}
+                    tabItemContainerStyle={{ width: (this.props.data.length * 8) + 'em' }}
+                    value={aprops.params.splat}
+                    onChange={this.handleChangeTab.bind(this) }
                     >
-                    { Main.MODULES.map(m => <ListItem key={m.path} value={m.path} primaryText={m.component.TITLE} style={{ textTransform: 'capitalize' }}/>) }
-                </SelectableList>
-            </Drawer>
-            <AppBar
-                title={this.props.children.type.TITLE}
-                style={{ textTransform: 'capitalize' }}
-                showMenuIconButton={!docked}
-                onLeftIconButtonTouchTap={handleToggle}
-                />
-            <div style={styles.content}>
-                {this.props.children}
-            </div>
-        </div>;
+                    {this.props.data.map((t, i) => <Tab
+                        key={i}
+                        value={t.modpath ? (t.modname + '/' + t.modpath) : t.modname}
+                        label={i}
+                        style={{ overflow: 'hidden' }}
+                        />) }
+                </Tabs>}
+        drawerMenu={<SelectableList
+                    value={aprops.location.pathname}
+                    onChange={this.handleChangeModule.bind(this) }
+                    >
+                    { MainFormImpl.MODULES.map(m => <ListItem key={m.path} value={m.path} primaryText={m.component.TITLE} style={{ textTransform: 'capitalize' }}/>) }
+                </SelectableList>}
+        >
+            {React.createElement(child, {})}
+        </TopLevelForm>;
     }
 }
-let MainWithWidth = withWidth()(Main);
+const MainForm = connect((state: any) => state.tabs)(MainFormImpl);

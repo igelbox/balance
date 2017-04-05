@@ -51,28 +51,30 @@ export class Form extends React.Component<IFormProps, IFormState> {
     }
 
     render() {
-        return <form>
-            <TextField
-                type='date'
-                className={this.state.date ? '' : 'null'}
-                floatingLabelText='Date'
-//                floatingLabelFixed={true}
-                value={ dateTime2dateValue(this.state.date) }
-                onChange={ this.handleChangeDateTime.bind(this, 'date') }
-                onBlur={ this.handleChangedDateTime.bind(this) }
-                />
-            <TextField
-                type='time'
-                className={this.state.date ? '' : 'null'}
-//                floatingLabelFixed={true}
-                floatingLabelText='Time'
-                value={ dateTime2timeValue(this.state.time) }
-                onChange={ this.handleChangeDateTime.bind(this, 'time') }
-                onBlur={ this.handleChangedDateTime.bind(this) }
-                />
+        return <form style={{ display: 'flex', flexDirection: 'column' }}>
+            <div style={{ display: 'flex' }}>
+                <TextField
+                    type='date'
+                    className={this.state.date ? '' : 'null'}
+                    floatingLabelText='Date'
+                    fullWidth={true}
+                    value={ dateTime2dateValue(this.state.date) }
+                    onChange={ this.handleChangeDateTime.bind(this, 'date') }
+                    onBlur={ this.handleChangedDateTime.bind(this) }
+                    />
+                <TextField
+                    type='time'
+                    className={this.state.date ? '' : 'null'}
+                    fullWidth={true}
+                    floatingLabelText='Time'
+                    value={ dateTime2timeValue(this.state.time) }
+                    onChange={ this.handleChangeDateTime.bind(this, 'time') }
+                    onBlur={ this.handleChangedDateTime.bind(this) }
+                    />
+            </div>
             <TextField
                 floatingLabelText='Hint'
-                value={this.props.document.hint}
+                value={this.props.document.hint || ''}
                 onChange={ this.handleChange.bind(this, 'hint') }
                 fullWidth={true}
                 />
@@ -87,6 +89,7 @@ export class Form extends React.Component<IFormProps, IFormState> {
             nv = new Date(fy, nv.getUTCMonth(), nv.getUTCDate(), nv.getUTCHours(), nv.getUTCMinutes());
             nv.setFullYear(fy);
         }
+        console.log('!' + nv);
         this.setState(Object.assign({}, this.state, {
             [fname]: nv
         }));

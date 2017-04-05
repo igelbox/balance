@@ -10,7 +10,7 @@ import {ModuleComponent} from '../core'
 import {IDocument} from './core'
 import {Form} from './form'
 
-const DATA: IDocument[] = [
+export const DATA: IDocument[] = [
     { id: '1', date: new Date(2016, 1, 2), hint: 'qwe', author: 'authorA', signed: true },
     { id: '2', date: new Date(2016, 5, 6), hint: '132', author: '?', signed: false },
     { id: '3', date: new Date(2016, 8, 14), author: 'кассир' },
@@ -73,6 +73,7 @@ export class Component extends ModuleComponent<any, IState> {
                     />}
                 modal={true}
                 open={!!this.state.opened}
+                autoScrollBodyContent={true}
                 >
                 <Form
                     document={this.state.opened}
