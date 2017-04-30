@@ -1,6 +1,4 @@
-@import '../node_modules/materialize-css/sass/components/color';
-
-$primary-color: color('light-blue', 'base');
+@import 'style';
 
 $roboto-font-path: '../node_modules/materialize-css/fonts/roboto/';
 @import '../node_modules/materialize-css/sass/materialize';

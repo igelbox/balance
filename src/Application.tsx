@@ -9,6 +9,9 @@ import { Tab, Tabs } from './materialize/Tabs';
 import { Modal } from './materialize/Modal';
 
 import { ProductList } from './components/ProductList';
+import { Schedule } from './components/Schedule';
+
+import schedule_data from './schedule.data';
 
 export class Application extends React.Component<any, {
   items: any[],
@@ -85,6 +88,8 @@ export class Application extends React.Component<any, {
           />
         </div>
       </div> : undefined}
+
+      <Schedule data={schedule_data} />
 
       <div className="fixed-action-btn">
         <a className="btn-floating btn-large waves-effect waves-light red" onClick={this.addItem.bind(this)}>

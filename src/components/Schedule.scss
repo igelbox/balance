@@ -1,0 +1,49 @@
+@import '../style';
+
+.schedule {
+  overflow-x: auto;
+
+  .fixed {
+    border-right: 1px solid lightgray;
+    text-align: left;
+  }
+
+  .we {
+    background: whitesmoke;
+  }
+  .we2 {
+    color: maroon;
+    border-right: 1px solid lightgray;
+  }
+
+  th, td {
+    white-space: pre;
+  }
+
+  td {
+    padding: 1px;
+
+    a {
+      width: 7em;
+      padding: 14px 4px;
+      color: white;
+      border-radius: 3px;
+      cursor: pointer;
+      display: block;
+
+      &:empty {
+        &::before {
+          content: " ";
+        }
+
+        &:hover {
+          background: #f2f2f2;
+        }
+      }
+
+      &.used {
+        background: $secondary-color;
+      }
+    }
+  }
+}
